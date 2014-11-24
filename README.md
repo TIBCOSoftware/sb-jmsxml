@@ -1,4 +1,4 @@
 sb-emsxml
 =========
 
-StreamBase example for XML payloads in TIBCO EMS messages
+StreamBase CEP examples for XML payloads in JMS TextMessages
