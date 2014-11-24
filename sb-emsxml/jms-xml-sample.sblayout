@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?><application-layout>
+    <component name="TestYHOO100">
+        <param name="gui:x" value="-1445"/>
+        <param name="gui:y" value="428"/>
+    </component>
+    <component name="TuplesDestinedToJMS">
+        <param name="gui:x" value="-1613"/>
+        <param name="gui:y" value="604"/>
+    </component>
+    <component name="XMLIn">
+        <param name="gui:x" value="-1340"/>
+        <param name="gui:y" value="334"/>
+    </component>
+    <component name="ConstructRequiredJMSFields">
+        <param name="gui:x" value="-713"/>
+        <param name="gui:y" value="578"/>
+        <param name="gui:bends:1" value="-754,619;-752,608"/>
+    </component>
+    <component name="DemoteFailMap">
+        <param name="gui:x" value="-1141"/>
+        <param name="gui:y" value="651"/>
+        <param name="gui:bends:1" value="-1181,668;-1179,681"/>
+    </component>
+    <component name="DemoteQuoteFields">
+        <param name="gui:x" value="-1493"/>
+        <param name="gui:y" value="604"/>
+    </component>
+    <component name="InFromJMS">
+        <param name="gui:x" value="-1445"/>
+        <param name="gui:y" value="240"/>
+    </component>
+    <component name="OutToJMS">
+        <param name="gui:x" value="-563"/>
+        <param name="gui:y" value="578"/>
+    </component>
+    <component name="QuoteSplit">
+        <param name="gui:x" value="-1391"/>
+        <param name="gui:y" value="604"/>
+    </component>
+    <component name="Split">
+        <param name="gui:x" value="-1142"/>
+        <param name="gui:y" value="334"/>
+    </component>
+    <component name="TupleToXMLConverter">
+        <param name="gui:x" value="-1268"/>
+        <param name="gui:y" value="628"/>
+        <param name="gui:bends:1" value="-1293,644;-1291,658"/>
+    </component>
+    <component name="Union">
+        <param name="gui:x" value="-1222"/>
+        <param name="gui:y" value="334"/>
+        <param name="gui:bends:1" value="-1259,271;-1239,353"/>
+        <param name="gui:bends:3" value="-1246,455;-1231,373"/>
+    </component>
+    <component name="Union2">
+        <param name="gui:x" value="-1024"/>
+        <param name="gui:y" value="599"/>
+        <param name="gui:bends:1" value="-1119,624;-1119,619"/>
+        <param name="gui:bends:2" value="-1121,648;-1117,629"/>
+        <param name="gui:bends:3" value="-1050,681;-1040,639"/>
+    </component>
+    <component name="XMLFailFilter">
+        <param name="gui:x" value="-859"/>
+        <param name="gui:y" value="599"/>
+    </component>
+    <component name="XMLTuplelAgg">
+        <param name="gui:x" value="-944"/>
+        <param name="gui:y" value="599"/>
+    </component>
+    <component name="XMLtoTupleConverter">
+        <param name="gui:x" value="-1019"/>
+        <param name="gui:y" value="372"/>
+        <param name="gui:bends:1" value="-1045,373;-1039,400"/>
+    </component>
+    <component name="YHOO100Map">
+        <param name="gui:x" value="-1340"/>
+        <param name="gui:y" value="428"/>
+    </component>
+    <component name="textMap">
+        <param name="gui:x" value="-1340"/>
+        <param name="gui:y" value="240"/>
+    </component>
+    <component name="Status">
+        <param name="gui:x" value="-884"/>
+        <param name="gui:y" value="395"/>
+        <param name="gui:bends:1" value="-928,410;-926,423"/>
+    </component>
+    <component name="TupleOut">
+        <param name="gui:x" value="-884"/>
+        <param name="gui:y" value="301"/>
+        <param name="gui:bends:1" value="-934,390;-920,331"/>
+    </component>
+    <component name="XMLConversionFailures">
+        <param name="gui:x" value="-713"/>
+        <param name="gui:y" value="662"/>
+        <param name="gui:bends:1" value="-772,639;-760,692"/>
+    </component>
+    <component name="XMLOut">
+        <param name="gui:x" value="-1019"/>
+        <param name="gui:y" value="261"/>
+        <param name="gui:bends:1" value="-1065,353;-1051,291"/>
+    </component>
+    <component name="AppDescription">
+        <param name="gui:x" value="-1243"/>
+        <param name="gui:y" value="47"/>
+        <param name="gui:width" value="210"/>
+        <param name="gui:height" value="141"/>
+    </component>
+    <component name="Reader">
+        <param name="gui:x" value="-1454"/>
+        <param name="gui:y" value="203"/>
+        <param name="gui:width" value="631"/>
+        <param name="gui:height" value="305"/>
+    </component>
+    <component name="Writer">
+        <param name="gui:x" value="-1663"/>
+        <param name="gui:y" value="532"/>
+        <param name="gui:width" value="1182"/>
+        <param name="gui:height" value="227"/>
+    </component>
+    <gui.group name="Reader" visual-state="open">
+        <member name="XMLIn"/>
+        <member name="textMap"/>
+        <member name="TupleOut"/>
+        <member name="YHOO100Map"/>
+        <member name="Split"/>
+        <member name="XMLtoTupleConverter"/>
+        <member name="TestYHOO100"/>
+        <member name="XMLOut"/>
+        <member name="Status"/>
+        <member name="Union"/>
+        <member name="InFromJMS"/>
+        <param name="gui:x" value="-1454"/>
+        <param name="gui:y" value="203"/>
+        <param name="gui:width" value="631"/>
+        <param name="gui:height" value="305"/>
+    </gui.group>
+    <gui.group color="255,128,0" name="Writer" visual-state="open">
+        <member name="Union2"/>
+        <member name="ConstructRequiredJMSFields"/>
+        <member name="TuplesDestinedToJMS"/>
+        <member name="QuoteSplit"/>
+        <member name="XMLConversionFailures"/>
+        <member name="XMLFailFilter"/>
+        <member name="DemoteFailMap"/>
+        <member name="OutToJMS"/>
+        <member name="DemoteQuoteFields"/>
+        <member name="XMLTuplelAgg"/>
+        <member name="TupleToXMLConverter"/>
+        <param name="gui:x" value="-1663"/>
+        <param name="gui:y" value="532"/>
+        <param name="gui:width" value="1182"/>
+        <param name="gui:height" value="227"/>
+    </gui.group>
+</application-layout>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<streambase-configuration xmlns:xi="http://www.w3.org/2001/XInclude"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="http://www.streambase.com/schemas/sbconf/">
+   <java-vm>
+      <jar file="${TIBCO_HOME}/ems/8.0/lib/tibjms.jar"/>
+      <jar file="${TIBCO_HOME}/ems/8.0/lib/jms-2.0.jar"/>
+      <jar file="${TIBCO_HOME}/ems/8.0/lib/tibcrypt.jar"/>
+   </java-vm> 
+   <operator-parameters>
+       <operator-parameter name="JMS_PROVIDER" value="tibems"/>
+   </operator-parameters>
+</streambase-configuration>

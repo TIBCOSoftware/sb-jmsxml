@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sbfs:Simulation xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:sbfs="http://www.streambase.com/schemas/feedsim/02/SBFS" Description="This will generate messages to be sent to the JMS server.">
+  <SimStreams Name="TuplesDestinedToJMS">
+    <ProcessingOptions DataRatePerSecond="2.0" DataGenerationMethod="Custom"/>
+    <Schema>
+      <Fields Name="symbol" DataTypeName="string" Description="">
+        <Distribution GenerationMethod="Enumerated" UseRandomSize="true" NumRandomEnumValues="1" EnumeratedDistMethod="SpecifiedValues" BlobMinSize="4">
+          <EnumeratedDist weight="1.0" value="YHOO"/>
+          <EnumeratedDist weight="1.0" value="EBAY"/>
+          <EnumeratedDist weight="1.0" value="GOOG"/>
+          <EnumeratedDist weight="1.0" value="AMZN"/>
+        </Distribution>
+        <DataSourceMapping/>
+      </Fields>
+      <Fields Name="bid" DataTypeName="double" Description="">
+        <Distribution GenerationMethod="Random" MinValue="10.0" MaxValue="15.0" StartValue="12.5" Delta="0.02"/>
+        <DataSourceMapping/>
+      </Fields>
+    </Schema>
+  </SimStreams>
+</sbfs:Simulation>

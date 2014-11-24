@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<modify version="7.4.3">
+    <add>
+        <named-schemas>
+            <schema description="This schema is used to represent incoming JMS Messages." name="JMSMessage">
+                <field description="Value of the TextMessage body" name="text" type="string"/>
+                <field description="Value of the 'JMSDestination' JMS header field. This is automatically filled out by the JMS server." name="JMSDestination" type="string"/>
+                <field description="Value of the 'JMSTimestamp' JMS header field. This is automatically filled out by the JMS server." name="JMSTimestamp" type="timestamp"/>
+            </schema>
+            <schema name="QuoteSchema">
+                <field name="symbol" type="string"/>
+                <field name="bid" type="double"/>
+            </schema>
+        </named-schemas>
+        <parameter-definitions>
+            <parameter default="${JMS_PROVIDER}" name="JMS_PROVIDER"/>
+        </parameter-definitions>
+        <stream name="TestYHOO100">
+            <property name="description" value="An input stream that triggers the manual enqueue of an xml string destined for the 'YHOO' topic."/>
+            <schema description="An input stream that triggers the manual enqueue of an xml string destined for the 'YHOO' topic."/>
+        </stream>
+        <stream name="TuplesDestinedToJMS" schema="QuoteSchema">
+            <property name="description" value="This stream receives Tuples sent by the feed simulation and sends them to the JMS Writer adapter to be converted to JMS messages and sent to the JMS server."/>
+        </stream>
+        <stream name="XMLIn">
+            <property name="description" value="An input stream to manually send XML input data."/>
+            <schema description="An input stream to manually send XML input data.">
+                <field name="text" type="string"/>
+            </schema>
+        </stream>
+        <box name="InFromJMS" type="inputadapter">
+            <property name="description" value="This adapter connects to a JMS server and subscribes to some topics, as defined in the jmsreader-%24%7BJMS_PROVIDER}.conf configuration file.&#13;&#10;&#13;&#10;As messages are received from the JMS server, they are converted to Tuples and sent downstream to be processed by the rest of the StreamBase application."/>
+            <output port="1" stream="out:InFromJMS_1"/>
+            <param name="start:state" value="true"/>
+            <param name="javaclass" value="com.streambase.sb.adapter.jms.enqueue.JMSReader"/>
+            <param name="CaptureStrategy" value="FLATTEN"/>
+            <param name="ConfigFile" value="jmsreader-${JMS_PROVIDER}.jmsconf"/>
+            <param name="LogFullCallstacks" value="false"/>
+            <param name="LogonAtStartup" value="true"/>
+            <param name="Schema" value="JMSMessage"/>
+            <param name="UseCommandInputPort" value="false"/>
+            <param name="UseStatusOutputPort" value="false"/>
+            <param name="logLevel" value="INFO"/>
+        </box>
+        <box name="DemoteQuoteFields" type="map">
+            <property name="description" value="The Map puts the input schema fields into a sub-tuple"/>
+            <input port="1" stream="TuplesDestinedToJMS"/>
+            <output port="1" stream="out:DemoteQuoteFields_1"/>
+            <target-list>
+                <item name="input" selection="none"/>
+                <expressions>
+                    <include field="quote.*">input.*</include>
+                </expressions>
+            </target-list>
+        </box>
+        <box name="textMap" type="map">
+            <property name="description" value="This Map includes only the xml string, and removes any remaining fields."/>
+            <input port="1" stream="out:InFromJMS_1"/>
+            <output port="1" stream="out:textMap_1"/>
+            <target-list>
+                <item name="input" selection="none">
+                    <include field="text"/>
+                </item>
+            </target-list>
+        </box>
+        <box name="YHOO100Map" type="map">
+            <property name="description" value="This Map generates an XML string for the 'YHOO' topic."/>
+            <input port="1" stream="TestYHOO100"/>
+            <output port="1" stream="out:YHOO100Map_1"/>
+            <target-list>
+                <item name="input" selection="none"/>
+                <expressions>
+                    <include field="text">"&lt;quote&gt;&lt;symbol&gt;YHOO&lt;/symbol&gt;&lt;bid&gt;100.0&lt;/bid&gt;&lt;/quote&gt;"</include>
+                </expressions>
+            </target-list>
+        </box>
+        <box name="QuoteSplit" type="split">
+            <input port="1" stream="out:DemoteQuoteFields_1"/>
+            <output port="1" stream="out:QuoteSplit_1"/>
+            <output port="2" stream="out:QuoteSplit_2"/>
+            <param name="output-count" value="2"/>
+        </box>
+        <box name="Union" type="union">
+            <input port="1" stream="out:textMap_1"/>
+            <input port="2" stream="XMLIn"/>
+            <input port="3" stream="out:YHOO100Map_1"/>
+            <output port="1" stream="out:Union_1"/>
+            <param name="strict" value="false"/>
+        </box>
+        <box name="Split" type="split">
+            <input port="1" stream="out:Union_1"/>
+            <output port="1" stream="XMLOut"/>
+            <output port="2" stream="out:Split_2"/>
+            <param name="output-count" value="2"/>
+        </box>
+        <box name="TupleToXMLConverter" type="java">
+            <input port="1" stream="out:QuoteSplit_2"/>
+            <output port="1" stream="out:TupleToXMLConverter_1"/>
+            <output port="2" stream="out:TupleToXMLConverter_2"/>
+            <param name="start:state" value="true"/>
+            <param name="javaclass" value="com.streambase.sb.operator.xmltuple.Tuple2XML"/>
+            <param name="AssumeLocalTimeZone" value="false"/>
+            <param name="AttributeFields" value=""/>
+            <param name="AttributeValuesFieldName" value="_ATTRIBUTES"/>
+            <param name="AttributeValuesSupported" value="true"/>
+            <param name="DateTimeFormat" value="yyyy-MM-dd HH:mm:ss.SSSZ"/>
+            <param name="ElementValueFieldName" value="_VALUE"/>
+            <param name="IncludeNullListValues" value="true"/>
+            <param name="NullListValueRepresentation" value="null"/>
+            <param name="logLevel" value="INFO"/>
+        </box>
+        <output-stream name="XMLOut"/>
+        <box name="DemoteFailMap" type="map">
+            <input port="1" stream="out:TupleToXMLConverter_2"/>
+            <output port="1" stream="out:DemoteFailMap_1"/>
+            <target-list>
+                <item name="input" selection="none"/>
+                <expressions>
+                    <include field="xmlfail.*">*</include>
+                </expressions>
+            </target-list>
+        </box>
+        <box name="XMLtoTupleConverter" type="java">
+            <property name="description" value="This operator converts the incoming XML string to a 'QuoteSchema' tuple."/>
+            <input port="1" stream="out:Split_2"/>
+            <output port="1" stream="TupleOut"/>
+            <output port="2" stream="Status"/>
+            <param name="start:state" value="true"/>
+            <param name="javaclass" value="com.streambase.sb.operator.xmltuple.XML2Tuple"/>
+            <param name="AssumeLocalTimeZone" value="false"/>
+            <param name="AttributeValuesFieldName" value=""/>
+            <param name="AttributeValuesSupported" value="false"/>
+            <param name="DateTimeFormat" value="yyyy-MM-dd HH:mm:ss.SSSZ"/>
+            <param name="ElementValueFieldName" value=""/>
+            <param name="IncludeNullListValues" value="true"/>
+            <param name="NullListValueRepresentation" value="null"/>
+            <param name="OutputSchema" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&#13;&#10;&lt;schema name=&quot;schema:XMLtoTupleConverter&quot;&gt;&#13;&#10;    &lt;field description=&quot;&quot; name=&quot;quote&quot; type=&quot;tuple&quot; value=&quot;QuoteSchema&quot;/&gt;&#13;&#10;&lt;/schema&gt;&#13;&#10;"/>
+            <param name="XMLField" value=""/>
+            <param name="logLevel" value="INFO"/>
+            <param name="passThroughFields" value="false"/>
+            <param name="useNamespaces" value="false"/>
+        </box>
+        <output-stream name="Status"/>
+        <output-stream name="TupleOut"/>
+        <box name="Union2" type="union">
+            <input port="1" stream="out:QuoteSplit_1"/>
+            <input port="2" stream="out:TupleToXMLConverter_1"/>
+            <input port="3" stream="out:DemoteFailMap_1"/>
+            <output port="1" stream="out:Union2_1"/>
+            <param name="strict" value="false"/>
+        </box>
+        <box name="XMLTuplelAgg" type="aggregate">
+            <property name="description" value="Re-join the input tuple and the converted XML string tuple (or the XML conversion fail tuple) back together into a single tuple for so it may be sent to EMS as a single message"/>
+            <input port="1" stream="out:Union2_1"/>
+            <output port="1" stream="out:XMLTuplelAgg_1"/>
+            <param name="dimension-name.0" value="TwoTuples"/>
+            <param name="dimension-type.0" value="Tuple"/>
+            <param name="dimension-partial.0" value="no"/>
+            <param name="dimension-size.0" value="2"/>
+            <param name="dimension-emit-close-first.0" value="false"/>
+            <param name="output-group-by" value="true"/>
+            <target-list>
+                <expressions>
+                    <include field="quote">firstval(quote)</include>
+                    <include field="XML">lastval(XML)</include>
+                    <include field="xmlfail">lastval(xmlfail)</include>
+                </expressions>
+            </target-list>
+        </box>
+        <box name="XMLFailFilter" type="filter">
+            <input port="1" stream="out:XMLTuplelAgg_1"/>
+            <output port="1" stream="out:XMLFailFilter_1"/>
+            <output port="2" stream="XMLConversionFailures"/>
+            <param name="autogen-nomatch-port" value="true"/>
+            <param name="expression.0" value="isnull(xmlfail)"/>
+            <param name="expression.1" value="true"/>
+        </box>
+        <output-stream name="XMLConversionFailures"/>
+        <box name="ConstructRequiredJMSFields" type="map">
+            <property name="description" value="This map will take the incoming generated Tuple from the feed simulation and will add the requisite fields before sending it to the JMS Writer."/>
+            <input port="1" stream="out:XMLFailFilter_1"/>
+            <output port="1" stream="out:ConstructRequiredJMSFields_1"/>
+            <target-list>
+                <item name="input" selection="none"/>
+                <expressions>
+                    <include field="text">XML</include>
+                    <include field="__JMSServerName">'${JMS_PROVIDER}'</include>
+                    <include field="__JMSDestinationName">'topics.' + input1.quote.symbol</include>
+                </expressions>
+            </target-list>
+        </box>
+        <box name="OutToJMS" type="outputadapter">
+            <property name="description" value="This adapter connects to a JMS server and subscribes to some topics, as defined in the jmswriter.conf configuration file.&#13;&#10;&#13;&#10;As the adapter receives Tuples, it converts them to JMS MapMesssages and sends them to the JMS server.&#13;&#10;&#13;&#10;Because there are more than one destination configured in jmswriter.conf (only one server, but multiple topics) the adapter expects fields named &quot;__JMSServerName&quot; and &quot;__JMSDestinationName&quot; to be present in the incoming Tuples, to indicate where to send the Tuple. Note that if only one server and one topic/queue is configured, these fields are not necessary since there is no ambiguity -- all incoming Tuples will be sent to the configured destination."/>
+            <input port="1" stream="out:ConstructRequiredJMSFields_1"/>
+            <param name="start:state" value="true"/>
+            <param name="javaclass" value="com.streambase.sb.adapter.jms.dequeue.JMSWriter"/>
+            <param name="CaptureStrategy" value="FLATTEN"/>
+            <param name="ConfigFile" value="jmswriter-${JMS_PROVIDER}.jmsconf"/>
+            <param name="LogFullCallstacks" value="false"/>
+            <param name="LogonAtStartup" value="true"/>
+            <param name="UseCommandInputPort" value="false"/>
+            <param name="UseStatusOutputPort" value="false"/>
+            <param name="logLevel" value="INFO"/>
+        </box>
+        <gui.note name="AppDescription">
+            <property name="description" value="This sample demonstrates the use of the JMS Reader and JMS Writer embedded adapters with XML-formatted TextMessages.&#13;&#10;&#13;&#10;Hover the mouse over this note or double-click it to see more text.&#13;&#10;&#13;&#10;The application works as follows:&#13;&#10;&#13;&#10;1.  The operators in the Writer group (shown in orange) receive simulated data from the 'MessagesToSendToJMS.sbfs' feed simulation, convert these tuples to JMS messages and send them to the appropriate JMS destinations.&#13;&#10;&#13;&#10;2 - The operators in the Reader group (shown in purple) receive the JMS messages from the JMS server, convert them back into tuples using the 'XMLtoTupleConverter', and route them the 'TupleOut' output stream.  There are also input streams for manual xml input.&#13;&#10;&#13;&#10;As currently configured, the application assumes that there is a TIBCO EMS server running on the machine with the following topics configured:&#13;&#10;&#13;&#10;&#9;- topics.EBAY&#13;&#10;&#9;- topics.YHOO&#13;&#10;&#9;- topics.GOOG&#13;&#10;&#9;- topics.AMZN&#13;&#10;&#13;&#10;The application can be re-configured to assume an ActiveMQ server running on the machine, as described in the project's README.txt&#13;&#10;&#13;&#10;You can hover over any of the operators in this application to get a description of its purpose."/>
+        </gui.note>
+    </add>
+</modify>
