@@ -1,5 +1,12 @@
 INTRODUCTION:
 
+The JMS Reader and JMS Writer adapters were replaced starting
+in StreamBase 7.5.4 by the JMS Consumer and JMS Publisher
+adapters. They remain available as the Legacy JMS Reader and
+Legacy JMS Writer, respectively.
+
+Newer branches of this project use the newer adapter set.
+
 This component demonstrates the use of the JMS Reader and 
 JMS Writer embedded adapters with XML-formatted TextMessages. 
 The default JMS TextMessage converters (provided with the 
