@@ -1,4 +1,4 @@
-# TIBCO EMS entity deletion script for StreamBase CEP JMS Samples
+# TIBCO EMS entity deletion script for StreamBase JMS Samples
 connect
 delete factory GenericConnectionFactory
 delete topic topics.YHOO

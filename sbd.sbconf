@@ -1,6 +1,56 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<streambase-configuration xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.streambase.com/schemas/sbconf/">
-    <!--Include common configuration settings for the project.-->
-    <sb-include file="./sbd-common.sbconf"/>
+<streambase-configuration xmlns:xi="http://www.w3.org/2001/XInclude"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="http://www.streambase.com/schemas/sbconf/">
+	<!--Include common configuration settings for the project. -->
+	<sb-include file="./sbd-common.sbconf" />
 
+	<java-vm>
+		<!-- <jar file="${TIBCO_HOME}/ems/8.3/lib/tibjms.jar"/ -->
+		<jar file="C:/TIBCO/ems/8.3/lib/tibjms.jar" />
+		<jar file="C:/TIBCO/ems/8.3/lib/jms-2.0.jar" />
+		<jar file="C:/TIBCO/ems/8.3/lib/tibcrypt.jar" />
+	</java-vm>
+
+	<adapter-configurations>
+		<adapter-configuration name="jms">
+			<sb-jms-adapter-config adapter-class="com.streambase.sb.adapter.jms2.JMSConsumer">
+				<default-timestamp-format>defaultTimestampFormat</default-timestamp-format>
+				<default-message-to-tuple-converter>com.streambase.sb.adapter.common.jms.enqueue.DefaultFromJMSTextMessageConverter</default-message-to-tuple-converter>
+				<default-tuple-to-message-converter>com.streambase.sb.adapter.common.jms.dequeue.DefaultToJMSTextMessageConverter</default-tuple-to-message-converter>
+				<timestamp-formats>
+					<timestamp-format format="MM/dd/yyyy hh:mm:ss aa"
+						name="defaultTimestampFormat" />
+				</timestamp-formats>
+				<jms-servers>
+					<jms-server connection-factory-name="GenericConnectionFactory"
+						name="tibems" provider-context-factory="com.tibco.tibjms.naming.TibjmsInitialContextFactory"
+						provider-name="TIBCO EMS" provider-url="tibjmsnaming://localhost:7222">
+						<destinations>
+							<destination acknowledge-mode="NO_ACKNOWLEDGE" name="topics.YHOO" />
+							<destination acknowledge-mode="NO_ACKNOWLEDGE" name="topics.AMZN" />
+							<destination acknowledge-mode="NO_ACKNOWLEDGE" name="topics.EBAY" />
+							<destination acknowledge-mode="NO_ACKNOWLEDGE" name="topics.GOOG" />
+						</destinations>
+					</jms-server>
+					<jms-server acknowledge-mode="AUTO_ACKNOWLEDGE"
+						connection-factory-name="ConnectionFactory"
+						destination-monitor-interval="1000" name="activemq"
+						provider-context-factory="org.apache.activemq.jndi.ActiveMQInitialContextFactory"
+						provider-name="Apache ActiveMQ" provider-url="tcp://localhost:61616">
+						<destinations>
+							<destination acknowledge-mode="AUTO_ACKNOWLEDGE"
+								name="topics.YHOO" />
+							<destination acknowledge-mode="AUTO_ACKNOWLEDGE"
+								name="topics.AMZN" />
+							<destination acknowledge-mode="AUTO_ACKNOWLEDGE"
+								name="topics.EBAY" />
+							<destination acknowledge-mode="AUTO_ACKNOWLEDGE"
+								name="topics.GOOG" />
+						</destinations>
+					</jms-server>
+				</jms-servers>
+			</sb-jms-adapter-config>
+		</adapter-configuration>
+	</adapter-configurations>
 </streambase-configuration>

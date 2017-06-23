@@ -9,11 +9,9 @@
     <global>
         <module-search directory="../sb-jmsxml"/>
         <operator-resource-search directory="../sb-jmsxml"/>
-        <operator-resource-search directory="../sb-jmsxml/jms-config-files"/>
     </global>
     <java-vm>
         <jar file="${STREAMBASE_HOME}/lib/junit.jar"/>
-        <jar file="${STREAMBASE_HOME}/lib/sbtest.jar"/>
         <jar file="${STREAMBASE_HOME}/lib/sbtest-unit.jar"/>
         <dir path="../sb-jmsxml/java-bin"/>
     </java-vm>

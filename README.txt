@@ -1,14 +1,7 @@
 INTRODUCTION:
 
-The JMS Reader and JMS Writer adapters were replaced starting
-in StreamBase 7.5.4 by the JMS Consumer and JMS Publisher
-adapters. They remain available as the Legacy JMS Reader and
-Legacy JMS Writer, respectively.
-
-Newer branches of this project use the newer adapter set.
-
-This component demonstrates the use of the JMS Reader and 
-JMS Writer embedded adapters with XML-formatted TextMessages. 
+This component demonstrates the use of the JMS Consumer and 
+JMS Producer embedded adapters with XML-formatted TextMessages. 
 The default JMS TextMessage converters (provided with the 
 adapter) are used to convert incoming JMS messages to XML 
 strings. These converters only require StreamBase and generic 
@@ -24,34 +17,28 @@ the XML-to-Tuple operator).
 
 SETUP:
 
-This project assumes that there's a Tibco EMS 8.0 server 
-running on localhost (tcp://localhost:7222), as noted in the project's
-sbd.sbconf under the <sb-include> setting:
-
-<sb-include file="sb-include/${JMS_PROVIDER:=tibems}.xml"/>
+This project assumes that there's a Tibco EMS 8.3 server 
+running on localhost (tcp://localhost:7222), as configured in
+the project's sbd.sbconf.
  
 The above setting directs the application to include the 
 tibems.xml options in the project's configuration. These 
 additional options specify the necessary EMS libraries that 
-are referenced by the JMS adapters. For EMS 8.0, these are:
+are referenced by the JMS adapters. For EMS 8.3, these are:
 
 ${TIBCO_HOME}/ems/8.0/lib/tibjms.jar
 ${TIBCO_HOME}/ems/8.0/lib/jms-2.0.jar
 ${TIBCO_HOME}/ems/8.0/lib/tibcrypt.jar
 
-However, the project can be re-configured for a local ActiveMQ 
-server by setting the JMS_PROVIDER environment variable to 
-'activemq', or by changing the default value in sbd.sbconf to:
+However, the project can also used with a local ActiveMQ 
+server by changing the Server Name property in the adapters
+from tibems to activemq.
 
-<sb-include file="sb-include/${JMS_PROVIDER:=activemq}.xml"/>
-  
-The above setting directs the application to include the 
-activemq.xml options in the project's configuration. These 
-additional options specify the necessary ActiveMQ libraries that 
-are referenced by the JMS adapters. For ActiveMQ 5.10.0, for example,
+The sbconf file also adds the necessary ActiveMQ libraries to
+the server classpath. For ActiveMQ 5.14.5, for example,
 there is only one library reference needed:
 
-${ACTIVEMQ_HOME}/activemq-all-5.10.0.jar
+${ACTIVEMQ_HOME}/activemq-all-5.14.5.jar
 
 For each supported provider, you'll also need to set an 
 additional environment variable to specify its home directory. 
@@ -61,19 +48,15 @@ For example:
 
      or
   
-  ACTIVEMQ_HOME=C:/apache-activemq-5.10.0
+  ACTIVEMQ_HOME=C:/apache-activemq-5.14.5
 
-Again, these variables are used by the <sb-include> settings for 
-each provider, as shown in the xml files under the 'sb-include' 
-sub-folder.
+These variables are used by the sbconf settings for 
+each provider.
  
 **Note: make sure these variables are set in the environment which 
 launches Studio, to ensure Studio will see the values on startup. 
 So these variables should be set *before* launching Studio.. they 
 should *not* be set in the application's Run Configuration.
-
-JMS configuration files for both TIBCO EMS and ActiveMQ are 
-included in the project under the 'jms-config-files' sub-folder.
 
 ENSURE THAT THE JMS PROVIDER IS RUNNING AND CONFIGURED FOR THIS
 SAMPLE:
@@ -118,11 +101,11 @@ environment variables.
 3. If not already done once for this JMS provider instance, create the
    connection factory and topics.
 
-   ActiveMQ
-    <not needed - connection factory and topics create by default or dynamically with default install>
-       
    Tibco EMS example
     tibemsadmin -script emscreate.scr  
+
+   ActiveMQ
+    <not needed - connection factory and topics create by default or dynamically with default install>
 
 RUNNING THE SAMPLE FROM STUDIO:
 
@@ -170,7 +153,7 @@ environment variables.
 
   Tibco EMS example (Linux):
     set JMS_PROVIDER=tibems
-    set TIBCO_HOME=C:/tibco 
+    set TIBCO_HOME=/opt/tibco 
 
   Tibco EMS example (Windows CMD shell):
     set JMS_PROVIDER=tibems
@@ -178,7 +161,7 @@ environment variables.
 
   ActiveMQ example (Linux):
     set JMS_PROVIDER=activemq
-    set ACTIVEMQ_HOME=C:/apache-activemq
+    set ACTIVEMQ_HOME=/opt/apache-activemq
     
   ActiveMQ example (Windows CMD shell):
     set JMS_PROVIDER=activemq
@@ -186,12 +169,12 @@ environment variables.
     
 2. Start the application using the following command:
 
-  sbd -f sbd.sbconf jms-sample.sbapp
+  sbd -f sbd.sbconf jms-xml-sample.sbapp
    
 3. Open a second StreamBase Command Prompt, and confirm that tuples 
 are flowing through to the 'TupleOut' and 'XMLOut' output streams:
 
-  sbc deq TupleOut, XMLOut
+  sbc deq TupleOut XMLOut
 
 4. Open a third StreamBase Command Prompt, and initiate the 
 feed simulation using the command:
@@ -199,6 +182,10 @@ feed simulation using the command:
   sbfeedsim MessagesToSendToJMS.sbfs
   
 Version History:
+1.2 Update use JMS Consumer and JMS Producer adapters under StreamBase
+    7.7.0; use TIBCO EMS 8.3; use Apache ActiveMQ 5.14.5; corrections
+    to run instructions
+    
 1.1 Update to StreamBase CEP 7.4, EMS 8.0, and ActiveMQ 5.10.0; use
     TupleToXML operator in place of string concatenation; rename
     JMS Adapter configuration file suffixes to jmsconf from sbconf;
