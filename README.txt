@@ -186,7 +186,8 @@ Version History:
     7.7.0; use TIBCO EMS 8.3; use Apache ActiveMQ 5.14.5; corrections
     to run instructions; replace YHOO with VRZN; remove dynamic 
     destination consume and produce; add MessagesToSendToJMSVRZN.sbfs;
-    use TupleToXML Passthrough field and simply producer logic
+    use TupleToXML Passthrough field and simplify producer logic
+    (Issue #2); format bid to 2 decimal places in XML (Issue #1)
     
 1.1 Update to StreamBase CEP 7.4, EMS 8.0, and ActiveMQ 5.10.0; use
     TupleToXML operator in place of string concatenation; rename

@@ -86,7 +86,8 @@
             <target-list>
                 <item name="input" selection="none"/>
                 <expressions>
-                    <include field="quote.*">input.*</include>
+                    <include field="quote.symbol">input.symbol</include>
+                    <include field="quote.bid">format("{0,number,###.##}", bid)</include>
                 </expressions>
             </target-list>
         </box>
