@@ -18,7 +18,7 @@ public class TestJMSXML {
 	@BeforeClass
 	public static void setupServer() throws Exception {
 		// create a StreamBase server and load applications once for all tests in this class
-		server = ServerManagerFactory.getEmbeddedServer();
+		server = ServerManagerFactory.getEmbeddedServer("sbd.sbconf");
 		server.startServer();
 		// this will run with the default JMS provider -- for this project, this is tibems
 		server.loadApp("jms-xml-sample.sbapp");
@@ -39,15 +39,15 @@ public class TestJMSXML {
 	}
 
 	@Test
-	public void testYHOO100() throws Exception {
-		server.getEnqueuer("TestYHOO100").enqueue(
+	public void testVRZN100() throws Exception {
+		server.getEnqueuer("TestVRZN100XMLParse").enqueue(
 				JSONSingleQuotesTupleMaker.MAKER, "{}");
 		new Expecter(server.getDequeuer("XMLOut"))
 				.expect(JSONSingleQuotesTupleMaker.MAKER,
-						"{'text':'<quote><symbol>YHOO</symbol><bid>100.0</bid></quote>'}");
+						"{'text':'<quote><symbol>VRZN</symbol><bid>100.0</bid></quote>'}");
 		new Expecter(server.getDequeuer("TupleOut")).expect(
 				JSONSingleQuotesTupleMaker.MAKER,
-				"{'quote':{'symbol':'YHOO','bid':100.0}}");
+				"{'quote':{'symbol':'VRZN','bid':100.0}}");
 	}
 
 	@After

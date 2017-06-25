@@ -179,12 +179,13 @@ are flowing through to the 'TupleOut' and 'XMLOut' output streams:
 4. Open a third StreamBase Command Prompt, and initiate the 
 feed simulation using the command:
 
-  sbfeedsim MessagesToSendToJMS.sbfs
+  sbfeedsim MessagesToSendToJMSVRZN.sbfs
   
 Version History:
 1.2 Update use JMS Consumer and JMS Producer adapters under StreamBase
     7.7.0; use TIBCO EMS 8.3; use Apache ActiveMQ 5.14.5; corrections
-    to run instructions
+    to run instructions; replace YHOO with VRZN; remove dynamic 
+    destination consume and produce; add MessagesToSendToJMSVRZN.sbfs
     
 1.1 Update to StreamBase CEP 7.4, EMS 8.0, and ActiveMQ 5.10.0; use
     TupleToXML operator in place of string concatenation; rename
@@ -192,7 +193,7 @@ Version History:
     add topics.sample.conf, emscreate.scr, emsdelete.scr, and
     run_activemq.cmd to project; add Windows JMS startup;
     commands to README.txt; reorder cmd line deq and sbfeedsim;
-    add SB JUnit test for YHOO 100.0; rename jms-sample.sbapp to
+    add SB JUnit test for VRZN 100.0; rename jms-sample.sbapp to
     jms-xml-sample.sbapp; add Version History to README.txt
        
 1.0 Initial version; based on StreamBase 7.3 and EMS 7.0; tuple-to-XML

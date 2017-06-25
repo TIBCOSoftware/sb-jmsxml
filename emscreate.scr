@@ -1,7 +1,7 @@
 # TIBCO EMS entity creation script for StreamBase JMS Samples
 connect
 create factory GenericConnectionFactory generic url=tcp://7222
-create topic topics.YHOO
+create topic topics.VRZN
 create topic topics.EBAY
 create topic topics.AMZN
 create topic topics.GOOG

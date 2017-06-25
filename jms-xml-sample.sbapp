@@ -51,8 +51,8 @@
                 </field>
             </schema>
         </named-schemas>
-        <stream name="TestYHOO100">
-            <property name="description" value="An input stream that triggers the manual enqueue of an xml string destined for the 'YHOO' topic."/>
+        <stream name="TestVRZN100XMLParse">
+            <property name="description" value="An input stream that triggers the manual enqueue of an xml string destined for 'VRZN' to test XML Parsing."/>
             <schema description="An input stream that triggers the manual enqueue of an xml string destined for the 'YHOO' topic."/>
         </stream>
         <stream name="TuplesDestinedToJMS" schema="QuoteSchema">
@@ -70,7 +70,7 @@
             <param name="start:state" value="true"/>
             <param name="javaclass" value="com.streambase.sb.adapter.jms2.JMSConsumer"/>
             <param name="connectOnStartup" value="true"/>
-            <param name="destinationName" value=""/>
+            <param name="destinationName" value="topics.VRZN"/>
             <param name="destinationType" value="Preconfigured"/>
             <param name="enableStatusPort" value="false"/>
             <param name="jmsBodySchema" value="JMSInMessage"/>
@@ -100,14 +100,14 @@
                 </item>
             </target-list>
         </box>
-        <box name="YHOO100Map" type="map">
-            <property name="description" value="This Map generates an XML string for the 'YHOO' topic."/>
-            <input port="1" stream="TestYHOO100"/>
-            <output port="1" stream="out:YHOO100Map_1"/>
+        <box name="VRZN100Map" type="map">
+            <property name="description" value="This Map generates an XML string for the 'VRZN' topic."/>
+            <input port="1" stream="TestVRZN100XMLParse"/>
+            <output port="1" stream="out:VRZN100Map_1"/>
             <target-list>
                 <item name="input" selection="none"/>
                 <expressions>
-                    <include field="text">"&lt;quote&gt;&lt;symbol&gt;YHOO&lt;/symbol&gt;&lt;bid&gt;100.0&lt;/bid&gt;&lt;/quote&gt;"</include>
+                    <include field="text">"&lt;quote&gt;&lt;symbol&gt;VRZN&lt;/symbol&gt;&lt;bid&gt;100.0&lt;/bid&gt;&lt;/quote&gt;"</include>
                 </expressions>
             </target-list>
         </box>
@@ -120,7 +120,7 @@
         <box name="Union" type="union">
             <input port="1" stream="out:textMap_1"/>
             <input port="2" stream="XMLIn"/>
-            <input port="3" stream="out:YHOO100Map_1"/>
+            <input port="3" stream="out:VRZN100Map_1"/>
             <output port="1" stream="out:Union_1"/>
             <param name="strict" value="false"/>
         </box>
@@ -223,22 +223,21 @@
                 <item name="input" selection="none"/>
                 <expressions>
                     <include field="text">XML</include>
-                    <include field="destinationID">'Topic---&gt;'+'topics.' + input1.quote.symbol</include>
-                    <include field="jmsHeader">JMSHeaderSchema(null,'topics.' + input1.quote.symbol,null,null,null,4,null,null,null,null)</include>
+                    <include field="jmsHeader">JMSHeaderSchema(null,null,null,null,null,4,null,null,null,null)</include>
                 </expressions>
             </target-list>
         </box>
         <output-stream name="ToJMS"/>
         <box name="OutToJMS2" type="java">
-            <property name="description" value="This adapter connects to a JMS server and publishes to some topics, as defined in the sbd.sbconf configuration file.&#13;&#10;&#13;&#10;As the adapter receives Tuples, it converts them to JMS MapMesssages and sends them to the JMS server.&#13;&#10;&#13;&#10;Because there are more than one destination configured in the adapter configuration (only one server, but multiple topics) the adapter expects fields named &quot;__JMSServerName&quot; and &quot;__JMSDestinationName&quot; to be present in the incoming Tuples, to indicate where to send the Tuple. Note that if only one server and one topic/queue is configured, these fields are not necessary since there is no ambiguity -- all incoming Tuples will be sent to the configured destination."/>
+            <property name="description" value="This adapter connects to a JMS server and publishes to some topics, as defined in the sbd.sbconf configuration file.&#13;&#10;&#13;&#10;As the adapter receives Tuples, it converts them to JMS MapMesssages and sends them to the JMS server.&#13;&#10;&#13;&#10;Because there are more than one destination configured in the adapter configuration (only one server, but multiple topics) the adapter requires the jmsHeader.JMSDestination field to be set to the name of the destination, and also that the destination be dynamically subscribed to, to indicate where to send the Tuple. Note that if only one server and one topic/queue is configured, these fields are not necessary since there is no ambiguity -- all incoming Tuples will be sent to the configured destination."/>
             <input port="1" stream="ToJMS"/>
             <output port="1" stream="JMSProducerStatus"/>
             <param name="start:state" value="true"/>
             <param name="javaclass" value="com.streambase.sb.adapter.jms2.JMSProducer"/>
             <param name="connectOnStartup" value="true"/>
-            <param name="destinationName" value=""/>
+            <param name="destinationName" value="topics.VRZN"/>
             <param name="destinationType" value="Preconfigured"/>
-            <param name="emitMsgSentTuples" value="false"/>
+            <param name="emitMsgSentTuples" value="true"/>
             <param name="enableStatusPort" value="true"/>
             <param name="logLevel" value="DEBUG"/>
             <param name="publishNulls" value="false"/>

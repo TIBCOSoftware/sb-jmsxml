@@ -1,7 +1,7 @@
 # TIBCO EMS entity deletion script for StreamBase JMS Samples
 connect
 delete factory GenericConnectionFactory
-delete topic topics.YHOO
+delete topic topics.VRZN
 delete topic topics.EBAY
 delete topic topics.AMZN
 delete topic topics.GOOG

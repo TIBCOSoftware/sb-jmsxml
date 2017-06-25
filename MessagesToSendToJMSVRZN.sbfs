@@ -6,9 +6,6 @@
       <Fields Name="symbol" DataTypeName="string" Description="">
         <Distribution GenerationMethod="Enumerated" UseRandomSize="true" NumRandomEnumValues="1" EnumeratedDistMethod="SpecifiedValues" BlobMinSize="4">
           <EnumeratedDist weight="1.0" value="VRZN"/>
-          <EnumeratedDist weight="1.0" value="EBAY"/>
-          <EnumeratedDist weight="1.0" value="GOOG"/>
-          <EnumeratedDist weight="1.0" value="AMZN"/>
         </Distribution>
         <DataSourceMapping/>
       </Fields>
