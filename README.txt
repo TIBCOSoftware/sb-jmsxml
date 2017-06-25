@@ -182,7 +182,7 @@ feed simulation using the command:
   sbfeedsim MessagesToSendToJMSVRZN.sbfs
   
 Version History:
-1.2 Issue #4: Update use JMS Consumer and JMS Producer adapters under StreamBase
+1.4 Issue #4: Update use JMS Consumer and JMS Producer adapters under StreamBase
     7.7.0; use TIBCO EMS 8.3; use Apache ActiveMQ 5.14.5; corrections
     to run instructions; replace YHOO with VRZN; remove dynamic 
     destination consume and produce; add MessagesToSendToJMSVRZN.sbfs
@@ -190,17 +190,22 @@ Version History:
     Issue #2: use TupleToXML Passthrough field and simplify producer logic
 
     Issue #3: format bid to 2 decimal places in XML
-    
-1.1 Update to StreamBase CEP 7.4, EMS 8.0, and ActiveMQ 5.10.0; use
+
+1.3 Update to StreamBase CEP 7.4, EMS 8.0, and ActiveMQ 5.10.0; use
     TupleToXML operator in place of string concatenation; rename
     JMS Adapter configuration file suffixes to jmsconf from sbconf;
     add topics.sample.conf, emscreate.scr, emsdelete.scr, and
     run_activemq.cmd to project; add Windows JMS startup;
     commands to README.txt; reorder cmd line deq and sbfeedsim;
-    add SB JUnit test for VRZN 100.0; rename jms-sample.sbapp to
+    add SB JUnit test for YHOO 100.0; rename jms-sample.sbapp to
     jms-xml-sample.sbapp; add Version History to README.txt
+
+1.2 Conflicting update to CEP 7.4, EMS 8.0 and ActiveMQ 5.10.0
+
+1.1 Erroneous version that should not have been uploaded to the exchange
        
 1.0 Initial version; based on StreamBase 7.3 and EMS 7.0; tuple-to-XML
     translation done by string concatenation
+
 
 -end-
