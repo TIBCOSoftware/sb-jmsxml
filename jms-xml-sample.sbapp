@@ -170,9 +170,9 @@
             <param name="connectOnStartup" value="true"/>
             <param name="destinationName" value="topics.VRZN"/>
             <param name="destinationType" value="Preconfigured"/>
-            <param name="emitMsgSentTuples" value="true"/>
+            <param name="emitMsgSentTuples" value="false"/>
             <param name="enableStatusPort" value="true"/>
-            <param name="logLevel" value="DEBUG"/>
+            <param name="logLevel" value="INFO"/>
             <param name="publishNulls" value="false"/>
             <param name="serverName" value="tibems"/>
         </box>
