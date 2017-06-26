@@ -22,10 +22,11 @@
   <jms-servers>
     <jms-server connection-factory-name="GenericConnectionFactory" name="tibems" provider-context-factory="com.tibco.tibjms.naming.TibjmsInitialContextFactory" provider-name="TIBCO EMS" provider-url="tibjmsnaming://localhost:7222">
       <destinations>
-        <destination acknowledge-mode="NO_ACKNOWLEDGE" name="topics.VRZN"/>
-        <destination acknowledge-mode="NO_ACKNOWLEDGE" name="topics.AMZN"/>
-        <destination acknowledge-mode="NO_ACKNOWLEDGE" name="topics.EBAY"/>
-        <destination acknowledge-mode="NO_ACKNOWLEDGE" name="topics.GOOG"/>
+        <destination acknowledge-mode="NO_ACKNOWLEDGE" message-to-tuple-converter="com.streambase.sb.adapter.jms2.converters.DefaultFromJMSTextMessageConverter" name="&gt;" tuple-to-message-converter="com.streambase.sb.adapter.jms2.converters.DefaultToJMSTextMessageConverter"/>
+        <destination acknowledge-mode="NO_ACKNOWLEDGE" message-to-tuple-converter="com.streambase.sb.adapter.jms2.converters.DefaultFromJMSTextMessageConverter" name="topics.VRZN" tuple-to-message-converter="com.streambase.sb.adapter.jms2.converters.DefaultToJMSTextMessageConverter"/>
+        <destination acknowledge-mode="NO_ACKNOWLEDGE" message-to-tuple-converter="com.streambase.sb.adapter.jms2.converters.DefaultFromJMSTextMessageConverter" name="topics.AMZN" tuple-to-message-converter="com.streambase.sb.adapter.jms2.converters.DefaultToJMSTextMessageConverter"/>
+        <destination acknowledge-mode="NO_ACKNOWLEDGE" message-to-tuple-converter="com.streambase.sb.adapter.jms2.converters.DefaultFromJMSTextMessageConverter" name="topics.EBAY" tuple-to-message-converter="com.streambase.sb.adapter.jms2.converters.DefaultToJMSTextMessageConverter"/>
+        <destination acknowledge-mode="NO_ACKNOWLEDGE" message-to-tuple-converter="com.streambase.sb.adapter.jms2.converters.DefaultFromJMSTextMessageConverter" name="topics.GOOG" tuple-to-message-converter="com.streambase.sb.adapter.jms2.converters.DefaultToJMSTextMessageConverter"/>
       </destinations>
     </jms-server>
     <jms-server connection-factory-name="ConnectionFactory" destination-monitor-interval="1000" name="activemq" provider-context-factory="org.apache.activemq.jndi.ActiveMQInitialContextFactory" provider-name="Apache ActiveMQ" provider-url="tcp://localhost:61616">

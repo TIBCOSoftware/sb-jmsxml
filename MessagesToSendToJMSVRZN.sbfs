@@ -10,7 +10,19 @@
         <DataSourceMapping/>
       </Fields>
       <Fields Name="bid" DataTypeName="double" Description="">
-        <Distribution GenerationMethod="Random" MinValue="10.0" MaxValue="15.0" StartValue="12.5" Delta="0.02"/>
+        <Distribution GenerationMethod="Conditional" MinValue="10.0" MaxValue="15.0" StartValue="12.5" Delta="0.02">
+          <ConditionalCases>
+            <FieldDependedOn>symbol</FieldDependedOn>
+            <Cases>
+              <NamesAndValues Name="symbol" Value="VRZN"/>
+              <Distribution GenerationMethod="Random" MinValue="43.0" MaxValue="49.0" StartValue="43.75" ConstantValue=""/>
+            </Cases>
+            <Cases>
+              <NamesAndValues Name="symbol" Value="" MatchAnyValue="true"/>
+              <Distribution GenerationMethod="Random" MinValue="10.0" MaxValue="15.0" StartValue="12.5" Delta="0.1" ConstantValue=""/>
+            </Cases>
+          </ConditionalCases>
+        </Distribution>
         <DataSourceMapping/>
       </Fields>
     </Schema>

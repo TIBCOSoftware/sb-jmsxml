@@ -181,7 +181,39 @@ feed simulation using the command:
 
   sbfeedsim MessagesToSendToJMSVRZN.sbfs
   
+5. Open a fourth StreamBase Command Prompt, and shut down all
+the processes:
+
+  sbadmin shutdown
+  
+6. In the first command prompt, start the application using
+the following command:
+
+  sbd -f sbd.sbconf jms-xml-dynamic-destination-sample.sbapp
+   
+7. Using the second StreamBase Command Prompt, and confirm that tuples 
+are flowing through to the 'TupleOut' and 'XMLOut' output streams:
+
+  sbc deq TupleOut XMLOut
+
+8. Using the third StreamBase Command Prompt, and initiate the 
+feed simulation using the command:
+
+  sbfeedsim MessagesToSendToJMS.sbfs
+  
+9. Using the fourth StreamBase Command Prompt, and shut down all
+the processes:
+
+  sbadmin shutdown  
+
+ 
 Version History:
+1.5 Issue #7: 
+      add jms-xml-dynamic-destination-sample.sbapp
+      add instructions for jms-xml-dynamic-destination-sample.sbapp to README.txt
+    Issue #8
+      add conditional bid generation for each symbol in the feedsims
+            
 1.4 Issue #4: Update use JMS Consumer and JMS Producer adapters under StreamBase
     7.7.0; use TIBCO EMS 8.3; use Apache ActiveMQ 5.14.5; corrections
     to run instructions; replace YHOO with VRZN; remove dynamic 

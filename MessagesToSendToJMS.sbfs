@@ -13,7 +13,31 @@
         <DataSourceMapping/>
       </Fields>
       <Fields Name="bid" DataTypeName="double" Description="">
-        <Distribution GenerationMethod="Random" MinValue="10.0" MaxValue="15.0" StartValue="12.5" Delta="0.02"/>
+        <Distribution GenerationMethod="Conditional" MinValue="10.0" MaxValue="15.0" StartValue="12.5" Delta="0.02">
+          <ConditionalCases>
+            <FieldDependedOn>symbol</FieldDependedOn>
+            <Cases>
+              <NamesAndValues Name="symbol" Value="VRZN"/>
+              <Distribution GenerationMethod="Random" MinValue="40.0" MaxValue="48.0" StartValue="43.75" Delta="0.01" ConstantValue=""/>
+            </Cases>
+            <Cases>
+              <NamesAndValues Name="symbol" Value="AMZN"/>
+              <Distribution GenerationMethod="Random" MinValue="980.0" MaxValue="1005.0" StartValue="993.98" Delta="0.1" ConstantValue=""/>
+            </Cases>
+            <Cases>
+              <NamesAndValues Name="symbol" Value="EBAY"/>
+              <Distribution GenerationMethod="Random" MinValue="30.0" MaxValue="40.0" StartValue="35.09" Delta="0.01" ConstantValue=""/>
+            </Cases>
+            <Cases>
+              <NamesAndValues Name="symbol" Value="GOOG"/>
+              <Distribution GenerationMethod="Random" MinValue="925.0" MaxValue="975.0" StartValue="952.27" Delta="0.05" ConstantValue=""/>
+            </Cases>
+            <Cases>
+              <NamesAndValues Name="symbol" Value="" MatchAnyValue="true"/>
+              <Distribution GenerationMethod="Random" MinValue="10.0" MaxValue="15.0" StartValue="12.5" Delta="0.02" ConstantValue=""/>
+            </Cases>
+          </ConditionalCases>
+        </Distribution>
         <DataSourceMapping/>
       </Fields>
     </Schema>
