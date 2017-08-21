@@ -26,9 +26,9 @@ tibems.xml options in the project's configuration. These
 additional options specify the necessary EMS libraries that 
 are referenced by the JMS adapters. For EMS 8.3, these are:
 
-${TIBCO_HOME}/ems/8.0/lib/tibjms.jar
-${TIBCO_HOME}/ems/8.0/lib/jms-2.0.jar
-${TIBCO_HOME}/ems/8.0/lib/tibcrypt.jar
+${TIBCO_HOME}/ems/8.3/lib/tibjms.jar
+${TIBCO_HOME}/ems/8.3/lib/jms-2.0.jar
+${TIBCO_HOME}/ems/8.3/lib/tibcrypt.jar
 
 However, the project can also used with a local ActiveMQ 
 server by changing the Server Name property in the adapters
