@@ -6,7 +6,8 @@ The default JMS TextMessage converters (provided with the
 adapter) are used to convert incoming JMS messages to XML 
 strings. These converters only require StreamBase and generic 
 JMS classes, so they can be used with multiple JMS providers. 
-Example configurations for Tibco EMS and ActiveMQ are included 
+
+Example configurations for Tibco EMS and Apache ActiveMQ are included 
 in this project.
 
 The XML strings are converted to StreamBase tuples based on a 
@@ -16,6 +17,8 @@ StreamBase CEP (see the product help for details on configuring
 the XML-to-Tuple operator).
 
 SETUP:
+
+TIBCO EMS
 
 This project assumes that there's a Tibco EMS 8.3 server 
 running on localhost (tcp://localhost:7222), as configured in
@@ -30,15 +33,17 @@ ${TIBCO_HOME}/ems/8.3/lib/tibjms.jar
 ${TIBCO_HOME}/ems/8.3/lib/jms-2.0.jar
 ${TIBCO_HOME}/ems/8.3/lib/tibcrypt.jar
 
+Apache ActiveMQ
+
 However, the project can also used with a local ActiveMQ 
-server by changing the Server Name property in the adapters
-from tibems to activemq.
+server by selecting the Server Name property in the JMS adapters
+to either activemqjndi or activemqdirect.
 
 The sbconf file also adds the necessary ActiveMQ libraries to
-the server classpath. For ActiveMQ 5.14.5, for example,
+the server classpath. For ActiveMQ 5.15.0, for example,
 there is only one library reference needed:
 
-${ACTIVEMQ_HOME}/activemq-all-5.14.5.jar
+${ACTIVEMQ_HOME}/activemq-all-5.15.0.jar
 
 For each supported provider, you'll also need to set an 
 additional environment variable to specify its home directory. 
@@ -48,7 +53,7 @@ For example:
 
      or
   
-  ACTIVEMQ_HOME=C:/apache-activemq-5.14.5
+  ACTIVEMQ_HOME=C:/apache-activemq-5.15.0
 
 These variables are used by the sbconf settings for 
 each provider.
@@ -71,8 +76,8 @@ environment variables.
 
   Tibco EMS example (Windows CMD shell):
     set JMS_PROVIDER=tibems
-    set TIBCO_HOME=C:\tibco 
-	PATH=%PATH%;%TIBCO_HOME%\bin
+    set TIBCO_HOME=C:\TIBCO
+	PATH=%PATH%;%TIBCO_HOME%\ems\8.3\bin
 	
   ActiveMQ example (Linux):
     set JMS_PROVIDER=activemq
@@ -119,7 +124,7 @@ environment variables.
 
   ActiveMQ example:
     set JMS_PROVIDER=activemq
-    set ACTIVEMQ_HOME=C:/apache-activemq
+    set ACTIVEMQ_HOME=C:\java\apache-activemq-5.15.0
 
 2. From the same prompt, launch Studio using the command:
 
@@ -165,7 +170,7 @@ environment variables.
     
   ActiveMQ example (Windows CMD shell):
     set JMS_PROVIDER=activemq
-    set ACTIVEMQ_HOME=C:\apache-activemq
+    set ACTIVEMQ_HOME=C:\java\apache-activemq-5.15.0
     
 2. Start the application using the following command:
 
@@ -179,12 +184,16 @@ are flowing through to the 'TupleOut' and 'XMLOut' output streams:
 4. Open a third StreamBase Command Prompt, and initiate the 
 feed simulation using the command:
 
-  sbfeedsim MessagesToSendToJMSVRZN.sbfs
+  sbfeedsim MessagesToSendToJMS.sbfs
   
 5. Open a fourth StreamBase Command Prompt, and shut down all
 the processes:
 
   sbadmin shutdown
+  
+For TIBCO EMS only (because the 
+jms-xml-dynamic-destination-sample.sbapp currently uses the 
+EMS-specific > wildcard topic name):
   
 6. In the first command prompt, start the application using
 the following command:
@@ -199,7 +208,7 @@ are flowing through to the 'TupleOut' and 'XMLOut' output streams:
 8. Using the third StreamBase Command Prompt, and initiate the 
 feed simulation using the command:
 
-  sbfeedsim MessagesToSendToJMS.sbfs
+  sbfeedsim MessagesToSendToJMSVRZN.sbfs
   
 9. Using the fourth StreamBase Command Prompt, and shut down all
 the processes:
@@ -213,6 +222,12 @@ Version History:
       add instructions for jms-xml-dynamic-destination-sample.sbapp to README.txt
     Issue #8
       add conditional bid generation for each symbol in the feedsims
+    Issue #9
+      update to Apache ActiveMQ 15.5.0 and validate
+    Issue #10
+      update README.txt to EMS 8.3 (correction)
+    Issue #11
+      Add JMS Server configuration for Apache ActiveMQ direct connection (ConnectionFactory)
             
 1.4 Issue #4: Update use JMS Consumer and JMS Producer adapters under StreamBase
     7.7.0; use TIBCO EMS 8.3; use Apache ActiveMQ 5.14.5; corrections

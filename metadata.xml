@@ -2,7 +2,7 @@
 <!DOCTYPE metadata SYSTEM "componentmetadata.dtd" >
 <component
     author="Steve Barber (sbarber@tibco.com)"
-    version="1.4"
+    version="1.5"
 	sbversion="7.7"
 	blurb="Process JMS XML-formatted TextMessages with StreamBase JMS Consumer and JMS Producer embedded adapters"
 	title="JMS XML-formatted TextMessages">This component demonstrates the use of the JMS Consumer and JMS Producer embedded adapters with XML-formatted TextMessages. The default JMS TextMessage converters (provided with the adapter) are used to convert incoming JMS messages to XML strings. These converters only require StreamBase and generic JMS classes, so they can be used with multiple JMS providers. Example configurations for Tibco EMS and Apache ActiveMQ are included in this project.
